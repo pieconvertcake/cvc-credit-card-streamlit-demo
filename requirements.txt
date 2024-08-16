@@ -1,0 +1,7 @@
+pandas
+openai
+fuzzywuzzy
+streamlit
+pdfplumber
+tabula-py
+pythainlp
