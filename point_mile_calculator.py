@@ -23,10 +23,14 @@ class PointMileCalculator:
         for card in card_names:
             self.resultPoints[card] = 0
         self.resultPoints.loc['total'] = 0
-
+        
     def calculate_points(self, spend_amount, interval, points_per_interval):
-        return (spend_amount // interval) * points_per_interval
-
+        print(f"spend_amount: {spend_amount}, interval: {interval}, points_per_interval: {points_per_interval}")
+        if interval == 0:
+            return 0
+        else :
+            return (spend_amount // interval) * points_per_interval
+    
     def calculate_general_points(self):
         for each_spend in self.statement_spend.itertuples():
             spend_amount = each_spend.spendingAmount
