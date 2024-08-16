@@ -11,6 +11,7 @@ import os
 # Replace these with your actual file paths and API key
 # statement_path = "sample_data/sampleStatement.csv"
 # statement_path = "temporary/cleaned_statement.csv"
+statement_final_cleaned_table = pd.DataFrame()
 point_rate_path = "sample_data/sampleCreditCardsData - pointsRate.csv"
 special_points_path = "sample_data/sampleCreditCardsData - specialPoints.csv"
 miles_rate_path = "sample_data/sampleCreditCardsData - milesRate.csv"
@@ -96,7 +97,8 @@ def pdf_manager():
             if st.button("Finalize and Display DataFrame"):
                 # Apply fixes to the combined DataFrame
                 statement_final_table = fix_statement_final_table(statement_final_table)
-
+                global statement_final_cleaned_table 
+                statement_final_cleaned_table = statement_final_table.copy()
                 st.write("Combined DataFrame:")
                 st.write(statement_final_table)
                 statement_final_table.to_csv("temporary/cleaned_statement.csv")
@@ -106,7 +108,8 @@ def pdf_manager():
 
                 # Instantiate the calculator
                 openai_api_key = os.getenv("OPENAI_API_KEY")
-                calculator = PointMileCalculator(statement_final_table, point_rate_path, special_points_path, miles_rate_path, openai_api_key)
+                global statement_final_cleaned_table 
+                calculator = PointMileCalculator(statement_final_cleaned_table, point_rate_path, special_points_path, miles_rate_path, openai_api_key)
 
                 # Perform calculations
                 calculator.calculate_general_points()
