@@ -77,6 +77,8 @@ def pdf_manager():
             # Read the PDF into a list of DataFrames using Tabula
             statement_read_with_tabula = tabula.read_pdf(uploaded_file, pages="all", multiple_tables=True)
             
+            global statement_final_cleaned_table 
+
             for i in range(num_pages):
                 st.write(f"Page {i + 1}")
                 st.write(statement_read_with_tabula[i])
@@ -97,7 +99,6 @@ def pdf_manager():
             if st.button("Finalize and Display DataFrame"):
                 # Apply fixes to the combined DataFrame
                 statement_final_table = fix_statement_final_table(statement_final_table)
-                global statement_final_cleaned_table 
                 statement_final_cleaned_table = statement_final_table.copy()
                 st.write("Combined DataFrame:")
                 st.write(statement_final_table)
@@ -108,7 +109,6 @@ def pdf_manager():
 
                 # Instantiate the calculator
                 openai_api_key = os.getenv("OPENAI_API_KEY")
-                global statement_final_cleaned_table 
                 calculator = PointMileCalculator(statement_final_cleaned_table, point_rate_path, special_points_path, miles_rate_path, openai_api_key)
 
                 # Perform calculations
