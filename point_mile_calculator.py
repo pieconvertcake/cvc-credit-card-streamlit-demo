@@ -25,7 +25,8 @@ class PointMileCalculator:
         self.resultPoints.loc['total'] = 0
         
     def calculate_points(self, spend_amount, interval, points_per_interval):
-        print(f"spend_amount: {spend_amount}, interval: {interval}, points_per_interval: {points_per_interval}")
+        spend_amount = float(spend_amount)
+        interval = float(interval)
         if interval == 0:
             return 0
         else :
