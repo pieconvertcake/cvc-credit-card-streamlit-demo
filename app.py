@@ -133,7 +133,6 @@ def my_demo():
             # Assuming you have an extractor class that takes the string format
             extractor = TransactionsExtractor(statement_read_with_documentai_in_text, openai_api_key)
             extracted_statement_transactions_df = extractor.extract_only_tracsaction()
-            extracted_statement_transactions_df.to_csv(statement_path, index=False)
 
             # Save the final cleaned table in session state
             st.session_state['statement_final_cleaned_table'] = extracted_statement_transactions_df.copy()
