@@ -3,5 +3,6 @@ openai
 fuzzywuzzy
 streamlit
 pdfplumber
-tabula-py
 pythainlp
+pillow
+google-cloud-documentai
