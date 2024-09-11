@@ -35,19 +35,34 @@ def my_demo():
         st.error("API key not found. Please set the OPENAI_API_KEY environment variable.")
         return
 
+    # Load the credentials from Streamlit secrets
+    service_account_info = {
+        "type": st.secrets["connections"]["gcs"]["type"],
+        "project_id": st.secrets["connections"]["gcs"]["project_id"],
+        "private_key_id": st.secrets["connections"]["gcs"]["private_key_id"],
+        "private_key": st.secrets["connections"]["gcs"]["private_key"],
+        "client_email": st.secrets["connections"]["gcs"]["client_email"],
+        "client_id": st.secrets["connections"]["gcs"]["client_id"],
+        "auth_uri": st.secrets["connections"]["gcs"]["auth_uri"],
+        "token_uri": st.secrets["connections"]["gcs"]["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["connections"]["gcs"]["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["connections"]["gcs"]["client_x509_cert_url"],
+    }
+    
+    # Load credentials from the parsed service account info
+    credentials = service_account.Credentials.from_service_account_info(service_account_info)
+    
+    # Set up the Document AI client
+    client = documentai.DocumentProcessorServiceClient(credentials=credentials)
+
     # File uploader widget: accept both PDF and image files
     uploaded_file = st.file_uploader("Choose a file (PDF, PNG, JPG)", type=["pdf", "png", "jpg", "jpeg"])
 
+    # The processor name from Document AI (replace with your processor's name)
+    processor_name = "projects/856865964624/locations/us/processors/638605b6f58ceffe"
+
     if uploaded_file is not None:
         try:
-            # Load your Google Cloud service account credentials
-            credentials = service_account.Credentials.from_service_account_file("cvc-credit-card-e6d52b0eca74.json")
-
-            # Set up the Document AI client
-            client = documentai.DocumentProcessorServiceClient(credentials=credentials)
-
-            # The processor name from Document AI (replace with your processor's name)
-            processor_name = "projects/856865964624/locations/us/processors/638605b6f58ceffe"
 
             # Check if the uploaded file is an image or a PDF
             if uploaded_file.type in ["image/png", "image/jpeg", "image/jpg"]:
