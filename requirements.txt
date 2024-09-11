@@ -6,3 +6,5 @@ pdfplumber
 pythainlp
 pillow
 google-cloud-documentai
+gcsfs
+st-files-connection
